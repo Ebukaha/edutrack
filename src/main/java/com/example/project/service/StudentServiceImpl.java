@@ -1,12 +1,11 @@
-package com.example.project.Service;
+package com.example.project.service;
 
-import com.example.project.Entity.Course;
-import com.example.project.Entity.Student;
-import com.example.project.Repository.CourseRepository;
-import com.example.project.Repository.Repository;
+import com.example.project.entity.Course;
+import com.example.project.entity.Student;
+import com.example.project.exception.ResourceNotFoundException;
+import com.example.project.repository.CourseRepository;
+import com.example.project.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http .ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,36 +14,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
-    private Student student;
-
-    @Autowired
-    public Repository repository;
-
-    @Autowired
-    private CourseRepository courseRepository;
+    private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
     @Override
-    public List<Student> GetStudents() {
-        return repository.findAll();
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
     }
 
     @Override
-    public Student AddStudent(Student student) {
-        Student saved = repository.save(student);
+    public Student addStudent(Student student) {
+        Student saved = studentRepository.save(student);
         syncCourseEnrollment(saved.getCourse());
         return saved;
     }
 
     @Override
-    public Student GetstudentbyId(int id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+    public Student getStudentById(int id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", "id", id));
     }
 
     @Override
-    public Student UpdateStudent(int id, Student student) {
-
-        Student existingStudent = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+    public Student updateStudent(int id, Student student) {
+        Student existingStudent = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", "id", id));
 
         String oldCourse = existingStudent.getCourse();
 
@@ -61,20 +55,18 @@ public class StudentServiceImpl implements StudentService {
         existingStudent.setAddress(student.getAddress());
         existingStudent.setNotes(student.getNotes());
 
-        Student updated = repository.save(existingStudent);
+        Student updated = studentRepository.save(existingStudent);
         syncCourseEnrollment(oldCourse);
         syncCourseEnrollment(updated.getCourse());
         return updated;
     }
 
     @Override
-    public void deleteS(int id) {
-        Student existing = repository.findById(id).orElse(null);
-        if (existing == null) {
-            throw new RuntimeException("Student not found with id: " + id);
-        }
+    public void deleteStudent(int id) {
+        Student existing = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", "id", id));
 
-        repository.deleteById(id);
+        studentRepository.deleteById(id);
         syncCourseEnrollment(existing.getCourse());
     }
 
@@ -87,7 +79,7 @@ public class StudentServiceImpl implements StudentService {
             String target = courseNameOrCode.toLowerCase();
 
             if ((!code.isEmpty() && target.contains(code)) || (!name.isEmpty() && target.contains(name))) {
-                long count = repository.findAll().stream()
+                long count = studentRepository.findAll().stream()
                         .filter(s -> {
                             if (s.getCourse() == null) return false;
                             String sCourse = s.getCourse().toLowerCase();

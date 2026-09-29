@@ -1,6 +1,6 @@
-package com.example.project.Service;
+package com.example.project.service;
 
-import com.example.project.Entity.Attendance;
+import com.example.project.entity.Attendance;
 
 import java.time.LocalDate;
 import java.util.List;

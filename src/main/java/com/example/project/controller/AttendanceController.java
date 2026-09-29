@@ -1,11 +1,10 @@
-package com.example.project.Controller;
+package com.example.project.controller;
 
-import com.example.project.Entity.Attendance;
-import com.example.project.Service.AttendanceServiceImpl;
+import com.example.project.entity.Attendance;
+import com.example.project.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,16 +21,13 @@ import java.util.List;
 public class AttendanceController {
 
     private static final Logger log = LoggerFactory.getLogger(AttendanceController.class);
-
-    @Autowired
-    private final AttendanceServiceImpl attendanceService;
+    private final AttendanceService attendanceService;
 
     @GetMapping
     public List<Attendance> getAttendance(
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate date) {
-
         return attendanceService.getAttendance(date);
     }
 

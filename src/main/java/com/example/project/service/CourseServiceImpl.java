@@ -1,9 +1,9 @@
-package com.example.project.Service;
+package com.example.project.service;
 
-import com.example.project.Entity.Course;
-import com.example.project.Repository.CourseRepository;
+import com.example.project.entity.Course;
+import com.example.project.exception.ResourceNotFoundException;
+import com.example.project.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
-    @Autowired
     private final CourseRepository repository;
 
     @Override
@@ -27,16 +26,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course getCourseById(int id) {
-
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Course", "id", id));
     }
 
     @Override
     public Course updateCourse(int id, Course course) {
-
         Course existingCourse = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Course", "id", id));
 
         existingCourse.setCourseName(course.getCourseName());
         existingCourse.setCourseCode(course.getCourseCode());
@@ -53,9 +50,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void deleteCourse(int id) {
-
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Course not found");
+            throw new ResourceNotFoundException("Course", "id", id);
         }
 
         repository.deleteById(id);

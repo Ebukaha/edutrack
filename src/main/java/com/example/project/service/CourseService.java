@@ -1,6 +1,6 @@
-package com.example.project.Service;
+package com.example.project.service;
 
-import com.example.project.Entity.Course;
+import com.example.project.entity.Course;
 
 import java.util.List;
 

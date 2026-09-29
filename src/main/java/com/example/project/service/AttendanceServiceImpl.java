@@ -1,9 +1,9 @@
-package com.example.project.Service;
+package com.example.project.service;
 
-import com.example.project.Entity.Attendance;
-import com.example.project.Repository.AttendanceRepository;
+import com.example.project.entity.Attendance;
+import com.example.project.exception.ResourceNotFoundException;
+import com.example.project.repository.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AttendanceServiceImpl implements AttendanceService {
 
-    @Autowired
     private final AttendanceRepository repository;
 
     @Override
@@ -29,12 +28,12 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Transactional
     public List<Attendance> saveSession(List<Attendance> records) {
         if (records == null || records.isEmpty()) {
-            throw new RuntimeException("No attendance records to save");
+            throw new IllegalArgumentException("No attendance records to save");
         }
 
         Attendance first = records.get(0);
         if (first.getDate() == null || first.getCourseCode() == null || first.getCourseCode().isBlank()) {
-            throw new RuntimeException("Date and course are required");
+            throw new IllegalArgumentException("Date and course are required");
         }
 
         repository.deleteByDateAndCourseCode(first.getDate(), first.getCourseCode());
@@ -44,7 +43,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public Attendance updateAttendance(int id, Attendance attendance) {
         Attendance existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Attendance record not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Attendance", "id", id));
 
         existing.setStatus(attendance.getStatus());
         existing.setStartTime(attendance.getStartTime());
