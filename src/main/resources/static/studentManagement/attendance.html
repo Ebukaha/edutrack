@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance | EduTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        <span>EduTrack</span>
+      </a>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">
+        <div class="nav-label">Main</div>
+        <a class="nav-item" href="index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a class="nav-item" href="students.html"><span class="icon">👨‍🎓</span> Students</a>
+        <a class="nav-item" href="courses.html"><span class="icon">📖</span> Courses</a>
+        <a class="nav-item active" href="attendance.html"><span class="icon">📅</span> Attendance</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Academic</div>
+        <a class="nav-item" href="grades.html"><span class="icon">📝</span> Grades</a>
+        <a class="nav-item" href="reports.html"><span class="icon">📊</span> Reports</a>
+        <a class="nav-item" href="timetable.html"><span class="icon">🗓️</span> Timetable</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">System</div>
+        <a class="nav-item" href="settings.html"><span class="icon">⚙️</span> Settings</a>
+        <a class="nav-item" href="help.html"><span class="icon">❓</span> Help</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">AD</div>
+        <div class="user-info">
+          <h4>Admin User</h4>
+          <span>Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="attendanceSearch" placeholder="Search students...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn">🔔 <span class="badge"></span></button>
+        <a href="mark-attendance.html" class="btn-primary"><span>📋</span> <span>Mark Attendance</span></a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1>Attendance</h1>
+          <p>Track and manage student attendance records.</p>
+        </div>
+        <a href="mark-attendance.html" class="btn-primary"><span>📋</span> Mark Attendance</a>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card attendance">
+          <div class="stat-header">
+            <div>
+              <div class="stat-value" id="overallRate">—</div>
+              <div class="stat-label">Overall Rate</div>
+            </div>
+            <div class="stat-icon">✅</div>
+          </div>
+        </div>
+        <div class="stat-card students">
+          <div class="stat-header">
+            <div>
+              <div class="stat-value" id="presentCount">—</div>
+              <div class="stat-label">Present</div>
+            </div>
+            <div class="stat-icon">👨‍🎓</div>
+          </div>
+        </div>
+        <div class="stat-card pending">
+          <div class="stat-header">
+            <div>
+              <div class="stat-value" id="absentCount">—</div>
+              <div class="stat-label">Absent</div>
+            </div>
+            <div class="stat-icon">❌</div>
+          </div>
+        </div>
+        <div class="stat-card courses">
+          <div class="stat-header">
+            <div>
+              <div class="stat-value" id="classCount">—</div>
+              <div class="stat-label">Classes</div>
+            </div>
+            <div class="stat-icon">📖</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 id="attendanceHeading">Attendance</h3>
+          <div class="filters-bar" style="margin: 0;">
+            <select id="courseFilter">
+              <option value="">All Courses</option>
+            </select>
+            <input type="date" id="dateFilter">
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+              <tr>
+                <td colspan="5">Loading attendance…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    const AVATAR_GRADIENTS = [
+      'linear-gradient(135deg, #6366f1, #8b5cf6)',
+      'linear-gradient(135deg, #06b6d4, #22d3ee)',
+      'linear-gradient(135deg, #f59e0b, #fbbf24)',
+      'linear-gradient(135deg, #10b981, #34d399)',
+      'linear-gradient(135deg, #ef4444, #f87171)'
+    ];
+
+    let records = [];
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function todayIso() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function statusClass(status) {
+      const value = (status || '').toLowerCase();
+      if (value === 'present') return 'active';
+      if (value === 'absent') return 'inactive';
+      if (value === 'late') return 'pending';
+      return '';
+    }
+
+    function initials(name) {
+      return (name || '')
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part.charAt(0).toUpperCase())
+        .join('') || '?';
+    }
+
+    function formatTimeRange(start, end) {
+      if (start && end) return `${start} – ${end}`;
+      if (start) return start;
+      return '—';
+    }
+
+    function courseKey(record) {
+      return record.courseCode || record.courseName || '';
+    }
+
+    function filteredRecords() {
+      const course = document.getElementById('courseFilter').value;
+      const query = document.getElementById('attendanceSearch').value.trim().toLowerCase();
+
+      return records.filter((record) => {
+        const matchesCourse = !course || courseKey(record) === course;
+        const haystack = [
+          record.studentName,
+          record.studentId,
+          record.courseName,
+          record.courseCode,
+          record.status
+        ].join(' ').toLowerCase();
+        return matchesCourse && (!query || haystack.includes(query));
+      });
+    }
+
+    function populateCourseFilter() {
+      const select = document.getElementById('courseFilter');
+      const current = select.value;
+      const courses = [...new Map(
+        records
+          .filter((record) => courseKey(record))
+          .map((record) => [courseKey(record), record.courseName || record.courseCode])
+      ).entries()];
+
+      select.innerHTML = '<option value="">All Courses</option>' +
+        courses.map(([value, label]) =>
+          `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`
+        ).join('');
+
+      if ([...select.options].some((option) => option.value === current)) {
+        select.value = current;
+      }
+    }
+
+    function updateStatistics(visible) {
+      const present = visible.filter((record) => (record.status || '').toLowerCase() === 'present').length;
+      const absent = visible.filter((record) => (record.status || '').toLowerCase() === 'absent').length;
+      const classes = new Set(visible.map(courseKey).filter(Boolean)).size;
+      const rate = visible.length ? Math.round(((present + visible.filter((record) => (record.status || '').toLowerCase() === 'late').length) / visible.length) * 100) : 0;
+
+      document.getElementById('overallRate').textContent = visible.length ? `${rate}%` : '—';
+      document.getElementById('presentCount').textContent = present;
+      document.getElementById('absentCount').textContent = absent;
+      document.getElementById('classCount').textContent = classes;
+    }
+
+    function renderTable() {
+      const tableBody = document.getElementById('attendanceTableBody');
+      const visible = filteredRecords();
+      const date = document.getElementById('dateFilter').value;
+      document.getElementById('attendanceHeading').textContent =
+        date === todayIso() ? "Today's Attendance" : `Attendance for ${date || 'all dates'}`;
+
+      updateStatistics(visible);
+
+      if (!visible.length) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="5">${records.length
+              ? 'No attendance records match these filters.'
+              : 'No attendance recorded yet. Use Mark Attendance to start.'}</td>
+          </tr>`;
+        return;
+      }
+
+      tableBody.innerHTML = visible.map((record, index) => {
+        const name = escapeHtml(record.studentName || 'Unnamed student');
+        const studentId = escapeHtml(record.studentId || '');
+        const course = escapeHtml(record.courseName || record.courseCode || '—');
+        const status = record.status || 'Unknown';
+        const editUrl = `mark-attendance.html?course=${encodeURIComponent(courseKey(record))}&date=${encodeURIComponent(record.date || '')}`;
+
+        return `
+          <tr>
+            <td>
+              <div class="student-cell">
+                <div class="student-avatar" style="background: ${AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length]};">
+                  ${escapeHtml(initials(record.studentName))}
+                </div>
+                <div>
+                  <div class="student-name">${name}</div>
+                  <div class="student-id">${studentId}</div>
+                </div>
+              </div>
+            </td>
+            <td>${course}</td>
+            <td>${escapeHtml(formatTimeRange(record.startTime, record.endTime))}</td>
+            <td><span class="status ${statusClass(status)}">${escapeHtml(status)}</span></td>
+            <td>
+              <div class="action-btns">
+                <a href="${editUrl}" class="action-btn" title="Edit">✏️</a>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    async function loadAttendance() {
+      const date = document.getElementById('dateFilter').value;
+      const url = date ? `/Attendance?date=${encodeURIComponent(date)}` : '/Attendance';
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch attendance');
+        }
+        records = await response.json();
+        populateCourseFilter();
+        renderTable();
+      } catch (error) {
+        console.error('Error loading attendance:', error);
+        document.getElementById('attendanceTableBody').innerHTML =
+          '<tr><td colspan="5">Could not load attendance. Make sure the server is running.</td></tr>';
+      }
+    }
+
+    document.getElementById('dateFilter').value = todayIso();
+    document.getElementById('dateFilter').addEventListener('change', loadAttendance);
+    document.getElementById('courseFilter').addEventListener('change', renderTable);
+    document.getElementById('attendanceSearch').addEventListener('input', renderTable);
+
+    loadAttendance();
+  </script>
+</body>
+</html>

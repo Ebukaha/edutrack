@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | EduTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        <span>EduTrack</span>
+      </a>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">
+        <div class="nav-label">Main</div>
+        <a class="nav-item active" href="index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a class="nav-item" href="students.html"><span class="icon">👨‍🎓</span> Students</a>
+        <a class="nav-item" href="courses.html"><span class="icon">📖</span> Courses</a>
+        <a class="nav-item" href="attendance.html"><span class="icon">📅</span> Attendance</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Academic</div>
+        <a class="nav-item" href="grades.html"><span class="icon">📝</span> Grades</a>
+        <a class="nav-item" href="reports.html"><span class="icon">📊</span> Reports</a>
+        <a class="nav-item" href="timetable.html"><span class="icon">🗓️</span> Timetable</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">System</div>
+        <a class="nav-item" href="settings.html"><span class="icon">⚙️</span> Settings</a>
+        <a class="nav-item" href="help.html"><span class="icon">❓</span> Help</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">AD</div>
+        <div class="user-info">
+          <h4>Admin User</h4>
+          <span>Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="dashboardSearch" placeholder="Search students, courses...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn">🔔 <span class="badge"></span></button>
+        <button class="icon-btn">💬</button>
+        <a href="add-student.html" class="btn-primary"><span>＋</span> <span>Add Student</span></a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Welcome back! Here's what's happening today.</p>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card students">
+          <div class="stat-header">
+            <div>
+              <div class="stat-value" id="totalStudents">—</div>
+              <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-icon">👨‍🎓</div>
+          </div>
+          <div class="stat-change" id="totalStudentsMeta">Loading…</div>
+        </div>
+        <div class="stat-card courses">
+          <div class="stat-header">
+            <div>
+              <div class="stat-value" id="activeCourses">—</div>
+              <div class="stat-label">Active Courses</div>
+            </div>
+            <div class="stat-icon">📖</div>
+          </div>
+          <div class="stat-change" id="activeCoursesMeta">From enrolled students</div>
+        </div>
+        <div class="stat-card attendance">
+          <div class="stat-header">
+            <div>
+              <div class="stat-value" id="activeStudents">—</div>
+              <div class="stat-label">Active Students</div>
+            </div>
+            <div class="stat-icon">✅</div>
+          </div>
+          <div class="stat-change" id="activeStudentsMeta">Loading…</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="stat-header">
+            <div>
+              <div class="stat-value" id="pendingStudents">—</div>
+              <div class="stat-label">Pending Enrollments</div>
+            </div>
+            <div class="stat-icon">⏳</div>
+          </div>
+          <div class="stat-change" id="pendingStudentsMeta">Loading…</div>
+        </div>
+      </div>
+
+      <div class="main-grid">
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Students</h3>
+            <a href="students.html">View All →</a>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Course</th>
+                  <th>Year</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="recentStudentsBody">
+                <tr>
+                  <td colspan="5">Loading students…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Activity</h3>
+              <a href="students.html">See all</a>
+            </div>
+            <div class="activity-list" id="activityList">
+              <div class="activity-item">
+                <div class="activity-dot" style="background: #94a3b8;"></div>
+                <div class="activity-content">
+                  <h4>Loading activity</h4>
+                  <p>Fetching the latest student records…</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Quick Actions</h3>
+            </div>
+            <div class="quick-actions">
+              <a class="quick-btn" href="add-student.html">
+                <span class="q-icon">➕</span>
+                Add Student
+              </a>
+              <a class="quick-btn" href="attendance.html">
+                <span class="q-icon">📋</span>
+                Take Attendance
+              </a>
+              <a class="quick-btn" href="reports.html">
+                <span class="q-icon">📊</span>
+                Generate Report
+              </a>
+              <a class="quick-btn" href="students.html">
+                <span class="q-icon">📤</span>
+                Export Data
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    const AVATAR_GRADIENTS = [
+      'linear-gradient(135deg, #6366f1, #8b5cf6)',
+      'linear-gradient(135deg, #06b6d4, #22d3ee)',
+      'linear-gradient(135deg, #f59e0b, #fbbf24)',
+      'linear-gradient(135deg, #10b981, #34d399)',
+      'linear-gradient(135deg, #ef4444, #f87171)'
+    ];
+
+    let allStudents = [];
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function statusClass(status) {
+      if (!status) return '';
+      return status.toLowerCase();
+    }
+
+    function studentName(student) {
+      return `${student.firstName || ''} ${student.lastName || ''}`.trim() || 'Unnamed student';
+    }
+
+    function initials(student) {
+      return `${student.firstName?.charAt(0) || ''}${student.lastName?.charAt(0) || ''}`.toUpperCase() || '?';
+    }
+
+    function countByStatus(students, status) {
+      return students.filter((student) => student.status?.toLowerCase() === status).length;
+    }
+
+    function uniqueCourses(students) {
+      return [...new Set(students.map((student) => student.course).filter(Boolean))];
+    }
+
+    function recentStudents(students, limit = 5) {
+      return [...students]
+        .sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
+        .slice(0, limit);
+    }
+
+    function updateStatistics(students) {
+      const total = students.length;
+      const active = countByStatus(students, 'active');
+      const pending = countByStatus(students, 'pending');
+      const inactive = countByStatus(students, 'inactive');
+      const courses = uniqueCourses(students);
+      const activeShare = total ? Math.round((active / total) * 100) : 0;
+
+      document.getElementById('totalStudents').textContent = total;
+      document.getElementById('activeCourses').textContent = courses.length;
+      document.getElementById('activeStudents').textContent = active;
+      document.getElementById('pendingStudents').textContent = pending;
+
+      const totalMeta = document.getElementById('totalStudentsMeta');
+      totalMeta.textContent = total ? `${active} currently active` : 'No students enrolled yet';
+      totalMeta.className = `stat-change ${total ? 'up' : ''}`;
+
+      const coursesMeta = document.getElementById('activeCoursesMeta');
+      coursesMeta.textContent = courses.length
+        ? courses.slice(0, 2).join(', ') + (courses.length > 2 ? ` +${courses.length - 2} more` : '')
+        : 'No courses assigned yet';
+
+      const activeMeta = document.getElementById('activeStudentsMeta');
+      activeMeta.textContent = total ? `${activeShare}% of all students` : 'No active enrollments';
+      activeMeta.className = `stat-change ${active ? 'up' : ''}`;
+
+      const pendingMeta = document.getElementById('pendingStudentsMeta');
+      pendingMeta.textContent = inactive ? `${inactive} inactive` : 'No inactive records';
+      pendingMeta.className = `stat-change ${pending ? 'down' : ''}`;
+    }
+
+    function displayRecentStudents(students) {
+      const tableBody = document.getElementById('recentStudentsBody');
+      const query = document.getElementById('dashboardSearch').value.trim().toLowerCase();
+
+      const filtered = query
+        ? students.filter((student) => {
+            const haystack = [
+              student.firstName,
+              student.lastName,
+              student.studentId,
+              student.course,
+              student.email,
+              student.status
+            ].join(' ').toLowerCase();
+            return haystack.includes(query);
+          })
+        : students;
+
+      const rows = recentStudents(filtered);
+
+      if (!rows.length) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="5">${query ? 'No students match that search.' : 'No students yet. Add one to see them here.'}</td>
+          </tr>`;
+        return;
+      }
+
+      tableBody.innerHTML = rows.map((student, index) => {
+        const name = escapeHtml(studentName(student));
+        const id = escapeHtml(student.studentId || '');
+        const course = escapeHtml(student.course || '—');
+        const year = escapeHtml(student.yearOfStudy || '—');
+        const status = student.status || 'Unknown';
+        const gradient = AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length];
+
+        return `
+          <tr>
+            <td>
+              <div class="student-cell">
+                <div class="student-avatar" style="background: ${gradient};">${escapeHtml(initials(student))}</div>
+                <div>
+                  <div class="student-name">${name}</div>
+                  <div class="student-id">${id}</div>
+                </div>
+              </div>
+            </td>
+            <td>${course}</td>
+            <td>${year}</td>
+            <td><span class="status ${escapeHtml(statusClass(status))}">${escapeHtml(status)}</span></td>
+            <td>
+              <div class="action-btns">
+                <a href="students.html" class="action-btn" title="View">👁️</a>
+                <a href="students.html" class="action-btn" title="Edit">✏️</a>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    function displayActivity(students) {
+      const list = document.getElementById('activityList');
+      const latest = recentStudents(students);
+
+      if (!latest.length) {
+        list.innerHTML = `
+          <div class="activity-item">
+            <div class="activity-dot" style="background: #94a3b8;"></div>
+            <div class="activity-content">
+              <h4>No activity yet</h4>
+              <p>New enrollments will appear here.</p>
+            </div>
+          </div>`;
+        return;
+      }
+
+      const pendingCount = countByStatus(students, 'pending');
+      const items = latest.map((student) => {
+        const name = escapeHtml(studentName(student));
+        const course = escapeHtml(student.course || 'an unassigned course');
+        const status = (student.status || '').toLowerCase();
+        let title = 'Student enrolled';
+        let color = '#10b981';
+
+        if (status === 'pending') {
+          title = 'Enrollment pending';
+          color = '#f59e0b';
+        } else if (status === 'inactive') {
+          title = 'Student inactive';
+          color = '#ef4444';
+        }
+
+        return `
+          <div class="activity-item">
+            <div class="activity-dot" style="background: ${color};"></div>
+            <div class="activity-content">
+              <h4>${title}</h4>
+              <p>${name} · ${course}</p>
+            </div>
+            <span class="activity-time">#${escapeHtml(student.id ?? '')}</span>
+          </div>`;
+      });
+
+      if (pendingCount) {
+        items.push(`
+          <div class="activity-item">
+            <div class="activity-dot" style="background: #f59e0b;"></div>
+            <div class="activity-content">
+              <h4>Pending enrollments</h4>
+              <p>${pendingCount} student${pendingCount === 1 ? '' : 's'} waiting for review</p>
+            </div>
+          </div>`);
+      }
+
+      list.innerHTML = items.join('');
+    }
+
+    function renderDashboard(students) {
+      updateStatistics(students);
+      displayRecentStudents(students);
+      displayActivity(students);
+    }
+
+    async function loadDashboard() {
+      try {
+        const response = await fetch('/Students');
+        if (!response.ok) {
+          throw new Error('Failed to fetch students');
+        }
+
+        allStudents = await response.json();
+        renderDashboard(allStudents);
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+        document.getElementById('totalStudents').textContent = '—';
+        document.getElementById('activeCourses').textContent = '—';
+        document.getElementById('activeStudents').textContent = '—';
+        document.getElementById('pendingStudents').textContent = '—';
+        document.getElementById('totalStudentsMeta').textContent = 'Could not load data';
+        document.getElementById('activeCoursesMeta').textContent = 'Could not load data';
+        document.getElementById('activeStudentsMeta').textContent = 'Could not load data';
+        document.getElementById('pendingStudentsMeta').textContent = 'Could not load data';
+        document.getElementById('recentStudentsBody').innerHTML =
+          '<tr><td colspan="5">Could not load students. Make sure the server is running.</td></tr>';
+        document.getElementById('activityList').innerHTML = `
+          <div class="activity-item">
+            <div class="activity-dot" style="background: #ef4444;"></div>
+            <div class="activity-content">
+              <h4>Unable to load activity</h4>
+              <p>Check the API connection and try again.</p>
+            </div>
+          </div>`;
+      }
+    }
+
+    document.getElementById('dashboardSearch').addEventListener('input', () => {
+      displayRecentStudents(allStudents);
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>

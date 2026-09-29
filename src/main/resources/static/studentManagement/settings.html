@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | EduTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        <span>EduTrack</span>
+      </a>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">
+        <div class="nav-label">Main</div>
+        <a class="nav-item" href="index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a class="nav-item" href="students.html"><span class="icon">👨‍🎓</span> Students</a>
+        <a class="nav-item" href="courses.html"><span class="icon">📖</span> Courses</a>
+        <a class="nav-item" href="attendance.html"><span class="icon">📅</span> Attendance</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Academic</div>
+        <a class="nav-item" href="grades.html"><span class="icon">📝</span> Grades</a>
+        <a class="nav-item" href="reports.html"><span class="icon">📊</span> Reports</a>
+        <a class="nav-item" href="timetable.html"><span class="icon">🗓️</span> Timetable</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">System</div>
+        <a class="nav-item active" href="settings.html"><span class="icon">⚙️</span> Settings</a>
+        <a class="nav-item" href="help.html"><span class="icon">❓</span> Help</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">AD</div>
+        <div class="user-info">
+          <h4>Admin User</h4>
+          <span>Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Search settings...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn">🔔 <span class="badge"></span></button>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1>Settings</h1>
+          <p>Configure system preferences and account options.</p>
+        </div>
+      </div>
+
+      <div class="form-card" style="max-width: 800px;">
+        <div class="settings-section">
+          <h3>General</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <h4>Institution Name</h4>
+              <p>Displayed across the system</p>
+            </div>
+            <input type="text" value="EduTrack University" style="width: 220px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit;">
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <h4>Academic Year</h4>
+              <p>Current active academic year</p>
+            </div>
+            <select style="padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit;">
+              <option>2025 – 2026</option>
+              <option>2026 – 2027</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <h4>Timezone</h4>
+              <p>Used for attendance and schedules</p>
+            </div>
+            <select style="padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit;">
+              <option>Africa/Lagos (WAT)</option>
+              <option>UTC</option>
+              <option>America/New_York</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Notifications</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <h4>Email Notifications</h4>
+              <p>Receive important updates via email</p>
+            </div>
+            <div class="toggle on"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <h4>Attendance Alerts</h4>
+              <p>Notify when attendance drops below threshold</p>
+            </div>
+            <div class="toggle on"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <h4>Grade Submission Reminders</h4>
+              <p>Remind instructors about pending grades</p>
+            </div>
+            <div class="toggle"></div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Security</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <h4>Two-Factor Authentication</h4>
+              <p>Add an extra layer of security</p>
+            </div>
+            <div class="toggle"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <h4>Session Timeout</h4>
+              <p>Automatically log out after inactivity</p>
+            </div>
+            <select style="padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit;">
+              <option>15 minutes</option>
+              <option selected>30 minutes</option>
+              <option>1 hour</option>
+              <option>Never</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-primary">💾 Save Changes</button>
+          <button class="btn-secondary">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    // Simple toggle interaction
+    document.querySelectorAll('.toggle').forEach(t => {
+      t.addEventListener('click', () => t.classList.toggle('on'));
+    });
+  </script>
+</body>
+</html>

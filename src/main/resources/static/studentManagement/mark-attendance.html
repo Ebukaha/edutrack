@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mark Attendance | EduTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        <span>EduTrack</span>
+      </a>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">
+        <div class="nav-label">Main</div>
+        <a class="nav-item" href="index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a class="nav-item" href="students.html"><span class="icon">👨‍🎓</span> Students</a>
+        <a class="nav-item" href="courses.html"><span class="icon">📖</span> Courses</a>
+        <a class="nav-item active" href="attendance.html"><span class="icon">📅</span> Attendance</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Academic</div>
+        <a class="nav-item" href="grades.html"><span class="icon">📝</span> Grades</a>
+        <a class="nav-item" href="reports.html"><span class="icon">📊</span> Reports</a>
+        <a class="nav-item" href="timetable.html"><span class="icon">🗓️</span> Timetable</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">System</div>
+        <a class="nav-item" href="settings.html"><span class="icon">⚙️</span> Settings</a>
+        <a class="nav-item" href="help.html"><span class="icon">❓</span> Help</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">AD</div>
+        <div class="user-info">
+          <h4>Admin User</h4>
+          <span>Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="studentSearch" placeholder="Search students...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn">🔔 <span class="badge"></span></button>
+        <a href="attendance.html" class="btn-secondary">← Back to Attendance</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1>Mark Attendance</h1>
+          <p>Select a course and record attendance for enrolled students.</p>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="course">Course *</label>
+            <select id="course" required>
+              <option value="">Select a course</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="attendanceDate">Date *</label>
+            <input type="date" id="attendanceDate" required>
+          </div>
+          <div class="form-group">
+            <label for="startTime">Start Time</label>
+            <input type="time" id="startTime">
+          </div>
+          <div class="form-group">
+            <label for="endTime">End Time</label>
+            <input type="time" id="endTime">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3>Student Attendance</h3>
+            <p id="rosterHint" style="margin-top: 5px; color: #64748b;">
+              Choose a course to load students.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-secondary" id="markPresentBtn">✓ All Present</button>
+            <button type="button" class="btn-secondary" id="markAbsentBtn">✕ All Absent</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Student ID</th>
+                <th>Attendance Status</th>
+              </tr>
+            </thead>
+            <tbody id="markTableBody">
+              <tr>
+                <td colspan="3">Select a course to load students.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-primary" id="saveAttendanceBtn">💾 Save Attendance</button>
+          <a href="attendance.html" class="btn-secondary">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    const AVATAR_GRADIENTS = [
+      'linear-gradient(135deg, #6366f1, #8b5cf6)',
+      'linear-gradient(135deg, #06b6d4, #22d3ee)',
+      'linear-gradient(135deg, #f59e0b, #fbbf24)',
+      'linear-gradient(135deg, #10b981, #34d399)',
+      'linear-gradient(135deg, #ef4444, #f87171)'
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    let students = [];
+    let existingRecords = [];
+    let visibleStudents = [];
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function studentName(student) {
+      return `${student.firstName || ''} ${student.lastName || ''}`.trim() || 'Unnamed student';
+    }
+
+    function initials(student) {
+      return `${student.firstName?.charAt(0) || ''}${student.lastName?.charAt(0) || ''}`.toUpperCase() || '?';
+    }
+
+    function selectedCourse() {
+      const select = document.getElementById('course');
+      const option = select.selectedOptions[0];
+      if (!option || !option.value) return null;
+      return {
+        code: option.value,
+        name: option.dataset.name || option.textContent.trim()
+      };
+    }
+
+    function matchesCourse(student, course) {
+      const enrolled = (student.course || '').trim().toLowerCase();
+      return enrolled === course.name.toLowerCase() || enrolled === course.code.toLowerCase();
+    }
+
+    function existingStatus(student) {
+      const match = existingRecords.find((record) =>
+        record.studentDbId === student.id ||
+        (record.studentId && record.studentId === student.studentId)
+      );
+      return match?.status || 'Present';
+    }
+
+    function renderRoster() {
+      const tableBody = document.getElementById('markTableBody');
+      const hint = document.getElementById('rosterHint');
+      const course = selectedCourse();
+      const query = document.getElementById('studentSearch').value.trim().toLowerCase();
+
+      if (!course) {
+        visibleStudents = [];
+        hint.textContent = 'Choose a course to load students.';
+        tableBody.innerHTML = '<tr><td colspan="3">Select a course to load students.</td></tr>';
+        return;
+      }
+
+      const enrolled = students.filter((student) => matchesCourse(student, course));
+      visibleStudents = enrolled.filter((student) => {
+        const haystack = [student.firstName, student.lastName, student.studentId, student.email]
+          .join(' ')
+          .toLowerCase();
+        return !query || haystack.includes(query);
+      });
+
+      hint.textContent = enrolled.length
+        ? `${enrolled.length} student${enrolled.length === 1 ? '' : 's'} enrolled in ${course.name}.`
+        : `No students are enrolled in ${course.name}.`;
+
+      if (!visibleStudents.length) {
+        tableBody.innerHTML = `<tr><td colspan="3">${enrolled.length
+          ? 'No students match that search.'
+          : 'No students enrolled in this course yet.'}</td></tr>`;
+        return;
+      }
+
+      tableBody.innerHTML = visibleStudents.map((student, index) => {
+        const status = existingStatus(student);
+        return `
+          <tr data-student-db-id="${student.id}">
+            <td>
+              <div class="student-cell">
+                <div class="student-avatar" style="background: ${AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length]};">
+                  ${escapeHtml(initials(student))}
+                </div>
+                <div>
+                  <div class="student-name">${escapeHtml(studentName(student))}</div>
+                </div>
+              </div>
+            </td>
+            <td>${escapeHtml(student.studentId || '')}</td>
+            <td>
+              <select class="attendance-status">
+                <option value="Present"${status === 'Present' ? ' selected' : ''}>Present</option>
+                <option value="Absent"${status === 'Absent' ? ' selected' : ''}>Absent</option>
+                <option value="Late"${status === 'Late' ? ' selected' : ''}>Late</option>
+              </select>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    function populateCourses(courses) {
+      const select = document.getElementById('course');
+      const requested = params.get('course') || '';
+
+      const options = courses
+        .filter((course) => course.courseCode || course.courseName)
+        .map((course) => {
+          const code = course.courseCode || course.courseName;
+          const name = course.courseName || course.courseCode;
+          const label = course.courseCode && course.courseName
+            ? `${course.courseCode} - ${course.courseName}`
+            : name;
+          return `<option value="${escapeHtml(code)}" data-name="${escapeHtml(name)}">${escapeHtml(label)}</option>`;
+        });
+
+      select.innerHTML = '<option value="">Select a course</option>' + options.join('');
+
+      if (requested) {
+        const match = [...select.options].find((option) =>
+          option.value === requested || option.dataset.name === requested
+        );
+        if (match) select.value = match.value;
+      }
+    }
+
+    function markAll(status) {
+      document.querySelectorAll('.attendance-status').forEach((select) => {
+        select.value = status;
+      });
+    }
+
+    async function loadExistingRecords() {
+      const date = document.getElementById('attendanceDate').value;
+      const course = selectedCourse();
+      existingRecords = [];
+
+      if (!date || !course) {
+        renderRoster();
+        return;
+      }
+
+      try {
+        const response = await fetch(`/Attendance?date=${encodeURIComponent(date)}`);
+        if (response.ok) {
+          const all = await response.json();
+          existingRecords = all.filter((record) =>
+            record.courseCode === course.code || record.courseName === course.name
+          );
+          if (existingRecords[0]?.startTime) {
+            document.getElementById('startTime').value = existingRecords[0].startTime;
+          }
+          if (existingRecords[0]?.endTime) {
+            document.getElementById('endTime').value = existingRecords[0].endTime;
+          }
+        }
+      } catch (error) {
+        console.error('Error loading existing attendance:', error);
+      }
+
+      renderRoster();
+    }
+
+    async function saveAttendance() {
+      const course = selectedCourse();
+      const date = document.getElementById('attendanceDate').value;
+      const startTime = document.getElementById('startTime').value;
+      const endTime = document.getElementById('endTime').value;
+      const button = document.getElementById('saveAttendanceBtn');
+
+      if (!course) {
+        alert('Please select a course.');
+        return;
+      }
+      if (!date) {
+        alert('Please select a date.');
+        return;
+      }
+      const enrolled = students.filter((student) => matchesCourse(student, course));
+      if (!enrolled.length) {
+        alert('There are no students to mark for this course.');
+        return;
+      }
+
+      const statusById = {};
+      document.querySelectorAll('#markTableBody tr[data-student-db-id]').forEach((row) => {
+        statusById[Number(row.dataset.studentDbId)] = row.querySelector('.attendance-status')?.value;
+      });
+
+      const attendanceRecords = enrolled.map((student) => ({
+        studentDbId: student.id,
+        studentId: student.studentId,
+        studentName: studentName(student),
+        courseCode: course.code,
+        courseName: course.name,
+        date,
+        startTime,
+        endTime,
+        status: statusById[student.id] || existingStatus(student)
+      }));
+
+      button.disabled = true;
+      button.textContent = 'Saving…';
+
+      try {
+        const response = await fetch('/Attendance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(attendanceRecords)
+        });
+
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+
+        window.location.href = `attendance.html`;
+      } catch (error) {
+        console.error('Error saving attendance:', error);
+        alert('Could not save attendance. Make sure the server is running.');
+        button.disabled = false;
+        button.textContent = '💾 Save Attendance';
+      }
+    }
+
+    async function init() {
+      document.getElementById('attendanceDate').value = params.get('date') || new Date().toISOString().split('T')[0];
+
+      try {
+        const [studentsRes, coursesRes] = await Promise.all([
+          fetch('/Students'),
+          fetch('/Courses')
+        ]);
+
+        if (!studentsRes.ok) {
+          throw new Error('Failed to fetch students');
+        }
+
+        students = await studentsRes.json();
+        let courses = coursesRes.ok ? await coursesRes.json() : [];
+
+        if (!courses.length) {
+          courses = [...new Set(students.map((student) => student.course).filter(Boolean))]
+            .map((name) => ({ courseName: name, courseCode: name }));
+        }
+
+        populateCourses(courses);
+        await loadExistingRecords();
+      } catch (error) {
+        console.error('Error loading mark attendance data:', error);
+        document.getElementById('markTableBody').innerHTML =
+          '<tr><td colspan="3">Could not load students. Make sure the server is running.</td></tr>';
+      }
+    }
+
+    document.getElementById('course').addEventListener('change', loadExistingRecords);
+    document.getElementById('attendanceDate').addEventListener('change', loadExistingRecords);
+    document.getElementById('studentSearch').addEventListener('input', renderRoster);
+    document.getElementById('markPresentBtn').addEventListener('click', () => markAll('Present'));
+    document.getElementById('markAbsentBtn').addEventListener('click', () => markAll('Absent'));
+    document.getElementById('saveAttendanceBtn').addEventListener('click', saveAttendance);
+
+    init();
+  </script>
+</body>
+</html>

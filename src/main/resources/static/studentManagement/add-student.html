@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Student | EduTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        <span>EduTrack</span>
+      </a>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">
+        <div class="nav-label">Main</div>
+        <a class="nav-item" href="index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a class="nav-item active" href="students.html"><span class="icon">👨‍🎓</span> Students</a>
+        <a class="nav-item" href="courses.html"><span class="icon">📖</span> Courses</a>
+        <a class="nav-item" href="attendance.html"><span class="icon">📅</span> Attendance</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Academic</div>
+        <a class="nav-item" href="grades.html"><span class="icon">📝</span> Grades</a>
+        <a class="nav-item" href="reports.html"><span class="icon">📊</span> Reports</a>
+        <a class="nav-item" href="timetable.html"><span class="icon">🗓️</span> Timetable</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">System</div>
+        <a class="nav-item" href="settings.html"><span class="icon">⚙️</span> Settings</a>
+        <a class="nav-item" href="help.html"><span class="icon">❓</span> Help</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">AD</div>
+        <div class="user-info">
+          <h4>Admin User</h4>
+          <span>Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Search...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn">🔔 <span class="badge"></span></button>
+        <a href="students.html" class="btn-secondary">← Back to Students</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1>Add New Student</h1>
+          <p>Fill in the details below to enroll a new student.</p>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <form id="studentForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input type="text" id="firstName" name="firstName" placeholder="e.g. Sarah" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input type="text" id="lastName" name="lastName" placeholder="e.g. Kim" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" placeholder="student@edu.com" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900">
+            </div>
+            <div class="form-group">
+              <label for="studentId">Student ID *</label>
+              <input type="text" id="studentId" name="studentId" placeholder="STU-2024-XXXX" required>
+            </div>
+            <div class="form-group">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" name="dob">
+            </div>
+            <div class="form-group">
+              <label for="course">Course / Program *</label>
+              <select id="course" name="course" required>
+                <option value="">Select a course</option>
+                <option>Computer Science</option>
+                <option>Business Administration</option>
+                <option>Medicine</option>
+                <option>Law</option>
+                <option>Mechanical Engineering</option>
+                <option>Electrical Engineering</option>
+                <option>Psychology</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="year">Year of Study *</label>
+              <select id="year" name="year" required>
+                <option value="">Select year</option>
+                <option>1st Year</option>
+                <option>2nd Year</option>
+                <option>3rd Year</option>
+                <option>4th Year</option>
+                <option>Postgraduate</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender">
+                <option value="">Prefer not to say</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="status">Enrollment Status *</label>
+              <select id="status" name="status" required>
+                <option value="Active">Active</option>
+                <option value="Pending">Pending</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label for="address">Address</label>
+              <textarea id="address" name="address" placeholder="Street, City, State, ZIP"></textarea>
+            </div>
+            <div class="form-group full">
+              <label for="notes">Additional Notes</label>
+              <textarea id="notes" name="notes" placeholder="Any special requirements or comments..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 Save Student</button>
+            <a href="students.html" class="btn-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('show');
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const requestedCourse = urlParams.get('course') || urlParams.get('courseCode') || '';
+
+  async function loadCoursesDropdown() {
+    const courseSelect = document.getElementById('course');
+    const defaultOptions = [
+      'Computer Science',
+      'Business Administration',
+      'Medicine',
+      'Law',
+      'Mechanical Engineering',
+      'Electrical Engineering',
+      'Psychology'
+    ];
+
+    try {
+      const response = await fetch('/Courses');
+      if (response.ok) {
+        const courses = await response.json();
+        if (courses && courses.length > 0) {
+          const dynamicOptions = courses.map((c) => {
+            const label = c.courseCode && c.courseName ? `${c.courseCode} - ${c.courseName}` : (c.courseName || c.courseCode);
+            const val = c.courseName || c.courseCode;
+            return `<option value="${val}">${label}</option>`;
+          });
+          courseSelect.innerHTML = '<option value="">Select a course</option>' + dynamicOptions.join('');
+        } else {
+          courseSelect.innerHTML = '<option value="">Select a course</option>' + defaultOptions.map(o => `<option value="${o}">${o}</option>`).join('');
+        }
+      } else {
+        courseSelect.innerHTML = '<option value="">Select a course</option>' + defaultOptions.map(o => `<option value="${o}">${o}</option>`).join('');
+      }
+    } catch (e) {
+      console.warn('Could not fetch courses from backend, using default list:', e);
+      courseSelect.innerHTML = '<option value="">Select a course</option>' + defaultOptions.map(o => `<option value="${o}">${o}</option>`).join('');
+    }
+
+    if (requestedCourse) {
+      const options = Array.from(courseSelect.options);
+      const match = options.find(o => 
+        o.value.toLowerCase() === requestedCourse.toLowerCase() || 
+        o.text.toLowerCase().includes(requestedCourse.toLowerCase())
+      );
+      if (match) {
+        courseSelect.value = match.value;
+      }
+    }
+  }
+
+  loadCoursesDropdown();
+
+  // Get the form
+  const studentForm = document.getElementById('studentForm');
+
+  // Listen for form submission
+  studentForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const student = {
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      studentId: document.getElementById('studentId').value,
+      dob: document.getElementById('dob').value,
+      course: document.getElementById('course').value,
+      yearOfStudy: document.getElementById('year').value,
+      gender: document.getElementById('gender').value,
+      status: document.getElementById('status').value,
+      address: document.getElementById('address').value,
+      notes: document.getElementById('notes').value
+    };
+
+    try {
+      const response = await fetch('/Students', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(student)
+      });
+
+      if (response.ok) {
+        const savedStudent = await response.json();
+        console.log('Student saved:', savedStudent);
+        alert('Student registered successfully!');
+        window.location.href = 'students.html';
+      } else {
+        const error = await response.text();
+        console.error('Error:', error);
+        alert('Failed to register student.');
+      }
+    } catch (error) {
+      console.error('Request failed:', error);
+      alert('Could not connect to the server.');
+    }
+  });
+</script>
+</body>
+</html>

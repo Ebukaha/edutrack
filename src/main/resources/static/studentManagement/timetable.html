@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timetable | EduTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        <span>EduTrack</span>
+      </a>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">
+        <div class="nav-label">Main</div>
+        <a class="nav-item" href="index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a class="nav-item" href="students.html"><span class="icon">👨‍🎓</span> Students</a>
+        <a class="nav-item" href="courses.html"><span class="icon">📖</span> Courses</a>
+        <a class="nav-item" href="attendance.html"><span class="icon">📅</span> Attendance</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Academic</div>
+        <a class="nav-item" href="grades.html"><span class="icon">📝</span> Grades</a>
+        <a class="nav-item" href="reports.html"><span class="icon">📊</span> Reports</a>
+        <a class="nav-item active" href="timetable.html"><span class="icon">🗓️</span> Timetable</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">System</div>
+        <a class="nav-item" href="settings.html"><span class="icon">⚙️</span> Settings</a>
+        <a class="nav-item" href="help.html"><span class="icon">❓</span> Help</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">AD</div>
+        <div class="user-info">
+          <h4>Admin User</h4>
+          <span>Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Search classes...">
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn">🔔 <span class="badge"></span></button>
+        <a href="#" class="btn-primary"><span>＋</span> <span>Add Class</span></a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1>Timetable</h1>
+          <p>Weekly class schedule overview.</p>
+        </div>
+        <div class="filters-bar" style="margin: 0;">
+          <select>
+            <option>Computer Science – Year 3</option>
+            <option>Business Admin – Year 2</option>
+            <option>Medicine – Year 1</option>
+            <option>All Programs</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 20px; overflow-x: auto;">
+        <div class="timetable-grid" style="min-width: 700px;">
+          <div class="tt-header"></div>
+          <div class="tt-header">Mon</div>
+          <div class="tt-header">Tue</div>
+          <div class="tt-header">Wed</div>
+          <div class="tt-header">Thu</div>
+          <div class="tt-header">Fri</div>
+
+          <div class="tt-time">08:00</div>
+          <div class="tt-cell"><div class="tt-slot">CS301<br>Data Structures<br>Room A12</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot">CS301<br>Data Structures<br>Room A12</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot lab">CS301 Lab<br>Lab B3</div></div>
+
+          <div class="tt-time">10:00</div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot">BA210<br>Marketing<br>Hall C</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot">BA210<br>Marketing<br>Hall C</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+
+          <div class="tt-time">12:00</div>
+          <div class="tt-cell"><div class="tt-slot">ME305<br>Thermo<br>Room E5</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot lab">ME305 Lab<br>Lab E1</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot">ME305<br>Thermo<br>Room E5</div></div>
+
+          <div class="tt-time">14:00</div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot">LW220<br>Const. Law<br>Room L2</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot">LW220<br>Const. Law<br>Room L2</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+
+          <div class="tt-time">16:00</div>
+          <div class="tt-cell"><div class="tt-slot">MD110<br>Anatomy<br>Med Hall</div></div>
+          <div class="tt-cell"><div class="tt-slot lab">MD110 Lab<br>Med Lab</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+          <div class="tt-cell"><div class="tt-slot">MD110<br>Anatomy<br>Med Hall</div></div>
+          <div class="tt-cell"><div class="tt-slot empty"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+  </script>
+</body>
+</html>

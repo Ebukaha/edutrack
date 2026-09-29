@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Course | EduTrack</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">📚</div>
+            <span>EduTrack</span>
+        </a>
+    </div>
+
+    <nav class="nav">
+
+        <div class="nav-section">
+
+            <div class="nav-label">Main</div>
+
+            <a class="nav-item" href="index.html">
+                <span class="icon">🏠</span> Dashboard
+            </a>
+
+            <a class="nav-item" href="students.html">
+                <span class="icon">👨‍🎓</span> Students
+            </a>
+
+            <a class="nav-item active" href="courses.html">
+                <span class="icon">📖</span> Courses
+            </a>
+
+            <a class="nav-item" href="attendance.html">
+                <span class="icon">📅</span> Attendance
+            </a>
+
+        </div>
+
+        <div class="nav-section">
+
+            <div class="nav-label">Academic</div>
+
+            <a class="nav-item" href="grades.html">
+                <span class="icon">📝</span> Grades
+            </a>
+
+            <a class="nav-item" href="reports.html">
+                <span class="icon">📊</span> Reports
+            </a>
+
+            <a class="nav-item" href="timetable.html">
+                <span class="icon">🗓️</span> Timetable
+            </a>
+
+        </div>
+
+        <div class="nav-section">
+
+            <div class="nav-label">System</div>
+
+            <a class="nav-item" href="settings.html">
+                <span class="icon">⚙️</span> Settings
+            </a>
+
+            <a class="nav-item" href="help.html">
+                <span class="icon">❓</span> Help
+            </a>
+
+        </div>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+        <div class="user-card">
+
+            <div class="avatar">AD</div>
+
+            <div class="user-info">
+                <h4>Admin User</h4>
+                <span>Administrator</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<div class="main">
+
+    <header class="topbar">
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+
+            <button class="menu-toggle" id="menuToggle">☰</button>
+
+            <div class="search-box">
+
+                <span>🔍</span>
+
+                <input
+                        type="text"
+                        placeholder="Search..."
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="topbar-actions">
+
+            <button class="icon-btn">
+                🔔 <span class="badge"></span>
+            </button>
+
+            <a href="courses.html" class="btn-secondary">
+                ← Back to Courses
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>Add New Course</h1>
+
+                <p>
+                    Fill in the details below to create a new course.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-card">
+
+            <form id="courseForm">
+
+                <div class="form-grid">
+
+
+                    <!-- Course Name -->
+
+                    <div class="form-group">
+
+                        <label for="courseName">
+                            Course Name *
+                        </label>
+
+                        <input
+                                type="text"
+                                id="courseName"
+                                name="courseName"
+                                placeholder="e.g. Introduction to Programming"
+                                required
+                        >
+
+                    </div>
+
+
+                    <!-- Course Code -->
+
+                    <div class="form-group">
+
+                        <label for="courseCode">
+                            Course Code *
+                        </label>
+
+                        <input
+                                type="text"
+                                id="courseCode"
+                                name="courseCode"
+                                placeholder="e.g. CS101"
+                                required
+                        >
+
+                    </div>
+
+
+                    <!-- Instructor -->
+
+                    <div class="form-group">
+
+                        <label for="instructor">
+                            Instructor *
+                        </label>
+
+                        <input
+                                type="text"
+                                id="instructor"
+                                name="instructor"
+                                placeholder="e.g. Dr. Alan Turing"
+                                required
+                        >
+
+                    </div>
+
+
+                    <!-- Credits -->
+
+                    <div class="form-group">
+
+                        <label for="credits">
+                            Credits *
+                        </label>
+
+                        <input
+                                type="number"
+                                id="credits"
+                                name="credits"
+                                placeholder="e.g. 4"
+                                min="1"
+                                required
+                        >
+
+                    </div>
+
+
+                    <!-- Enrolled Students -->
+
+                    <div class="form-group">
+
+                        <label for="enrolled">
+                            Enrolled Students
+                        </label>
+
+                        <input
+                                type="number"
+                                id="enrolled"
+                                name="enrolled"
+                                placeholder="e.g. 142"
+                                min="0"
+                                value="0"
+                        >
+
+                    </div>
+
+
+                    <!-- Maximum Capacity -->
+
+                    <div class="form-group">
+
+                        <label for="capacity">
+                            Maximum Capacity
+                        </label>
+
+                        <input
+                                type="number"
+                                id="capacity"
+                                name="capacity"
+                                placeholder="e.g. 150"
+                                min="1"
+                                value="150"
+                        >
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="form-group">
+
+                        <label for="status">
+                            Course Status *
+                        </label>
+
+                        <select
+                                id="status"
+                                name="status"
+                                required
+                        >
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Draft">
+                                Draft
+                            </option>
+
+                            <option value="Archived">
+                                Archived
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Department -->
+
+                    <div class="form-group">
+
+                        <label for="department">
+                            Department
+                        </label>
+
+                        <input
+                                type="text"
+                                id="department"
+                                name="department"
+                                placeholder="e.g. Computer Science"
+                        >
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    <div class="form-group full">
+
+                        <label for="description">
+                            Course Description
+                        </label>
+
+                        <textarea
+                                id="description"
+                                name="description"
+                                placeholder="Enter a short description of the course..."
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                            type="submit"
+                            class="btn-primary"
+                    >
+                        💾 Save Course
+                    </button>
+
+                    <a
+                            href="courses.html"
+                            class="btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // Sidebar
+
+    const toggle =
+        document.getElementById('menuToggle');
+
+    const sidebar =
+        document.getElementById('sidebar');
+
+    const overlay =
+        document.getElementById('overlay');
+
+
+    toggle.addEventListener('click', () => {
+
+        sidebar.classList.toggle('open');
+
+        overlay.classList.toggle('show');
+
+    });
+
+
+    overlay.addEventListener('click', () => {
+
+        sidebar.classList.remove('open');
+
+        overlay.classList.remove('show');
+
+    });
+
+
+    // Course form
+
+    const courseForm =
+        document.getElementById('courseForm');
+
+
+    courseForm.addEventListener('submit', async (event) => {
+
+        event.preventDefault();
+
+
+        const course = {
+
+            courseName:
+            document.getElementById('courseName').value,
+
+            courseCode:
+            document.getElementById('courseCode').value,
+
+            instructor:
+            document.getElementById('instructor').value,
+
+            credits:
+                Number(document.getElementById('credits').value),
+
+            enrolled:
+                Number(document.getElementById('enrolled').value),
+
+            capacity:
+                Number(document.getElementById('capacity').value),
+
+            status:
+            document.getElementById('status').value,
+
+            department:
+            document.getElementById('department').value,
+
+            description:
+            document.getElementById('description').value
+
+        };
+
+
+        try {
+
+            const response = await fetch('/Courses', {
+
+                method: 'POST',
+
+                headers: {
+
+                    'Content-Type': 'application/json'
+
+                },
+
+                body: JSON.stringify(course)
+
+            });
+
+
+            if (response.ok) {
+
+                const savedCourse =
+                    await response.json();
+
+                console.log(
+                    'Course saved:',
+                    savedCourse
+                );
+
+                alert(
+                    'Course added successfully!'
+                );
+
+                window.location.href =
+                    'courses.html';
+
+            } else {
+
+                const error =
+                    await response.text();
+
+                console.error(
+                    'Error:',
+                    error
+                );
+
+                alert(
+                    'Failed to add course.'
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                'Request failed:',
+                error
+            );
+
+            alert(
+                'Could not connect to the server.'
+            );
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
