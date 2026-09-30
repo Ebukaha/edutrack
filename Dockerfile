@@ -1,31 +1,24 @@
-# Stage 1: Build stage
+# ===== Build Stage =====
 FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
+
 WORKDIR /app
 
-# Copy pom.xml and resolve dependencies
+# Copy pom.xml first for better layer caching
 COPY pom.xml .
-COPY .mvn .mvn
-COPY mvnw .
-RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline -B || true
+RUN mvn dependency:go-offline -B
 
-# Copy source code and build production jar
+# Copy source code and build
 COPY src ./src
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests -B
 
-# Stage 2: Runtime stage
+# ===== Runtime Stage =====
 FROM eclipse-temurin:21-jre-alpine
+
 WORKDIR /app
 
-# Create a non-root system user for security
-RUN addgroup -S edutrack && adduser -S edutrack -G edutrack
-USER edutrack:edutrack
-
-# Copy built artifact from builder stage
+# Copy the built JAR
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose port
 EXPOSE 8080
 
-# Configure JVM memory flags and entrypoint
-ENTRYPOINT ["java", "-XX:+UseG1GC", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
