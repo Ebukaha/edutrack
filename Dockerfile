@@ -4,7 +4,7 @@ FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
+RUN mvn dependency:go-offline -B || true
 
 COPY src ./src
 RUN mvn clean package -DskipTests -B
@@ -14,25 +14,16 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Copy the TiDB CA certificate (same folder as Dockerfile)
-COPY isrgrootx1.pem /etc/ssl/certs/tidb-ca.pem
+# Create a non-root system user for security
+RUN addgroup -S edutrack && adduser -S edutrack -G edutrack
 
-# Create a Java truststore and import the CA certificate
-RUN keytool -importcert \
-    -noprompt \
-    -alias tidb-ca \
-    -file /etc/ssl/certs/tidb-ca.pem \
-    -keystore /etc/ssl/certs/tidb-truststore.jks \
-    -storepass changeit \
-    -storetype JKS
-
-# Copy the built JAR
+# Copy the built JAR artifact
 COPY --from=builder /app/target/*.jar app.jar
+
+# Set ownership to non-root user
+RUN chown -R edutrack:edutrack /app
+USER edutrack:edutrack
 
 EXPOSE 8080
 
-# Use the custom truststore
-ENTRYPOINT ["java", \
-    "-Djavax.net.ssl.trustStore=/etc/ssl/certs/tidb-truststore.jks", \
-    "-Djavax.net.ssl.trustStorePassword=changeit", \
-    "-jar", "app.jar"]
+ENTRYPOINT ["java", "-XX:+UseG1GC", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

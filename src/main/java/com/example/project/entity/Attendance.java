@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "Attendance")
+@Table(name = "attendance")
 public class Attendance {
 
     @Id

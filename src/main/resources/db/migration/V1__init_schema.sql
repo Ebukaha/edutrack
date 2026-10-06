@@ -1,6 +1,6 @@
 -- Initial Database Migration Schema for EduTrack
 
-CREATE TABLE IF NOT EXISTS Students (
+CREATE TABLE IF NOT EXISTS students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS Students (
     notes TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS Courses (
+CREATE TABLE IF NOT EXISTS courses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     course_name VARCHAR(255),
     course_code VARCHAR(100),
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Courses (
     description TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS Attendance (
+CREATE TABLE IF NOT EXISTS attendance (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_db_id INT,
     student_id VARCHAR(100),
